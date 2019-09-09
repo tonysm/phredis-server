@@ -23,38 +23,44 @@ class State
 
         switch ($cmd) {
             case "ping":
-                return $socket->write("+PONG\r\n");
+                return $this->sendResponse(Symbol::PONG(), $socket);
                 break;
             case "echo":
                 $msg = array_slice($data, 4)[0] ?? null;
-                return $this->parseResponse($msg, $socket);
+                return $this->sendResponse($msg, $socket);
                 break;
             case "set":
                 $key = $data[4] ?? null;
                 $value = $data[6] ?? null;
                 $this->data[$key] = $value;
-                return $socket->write("+OK\r\n");
+                return $this->sendResponse(Symbol::OK(), $socket);
                 break;
             case "get":
                 $key = $data[4] ?? null;
                 $value = array_key_exists($key, $this->data) ? "{$this->data[$key]}" : null;
 
-                return $this->parseResponse($value, $socket);
+                return $this->sendResponse($value, $socket);
                 break;
+            case "keys":
+                // we are only getting all keys here.
+                // $pattern = $data[4] ?? null;
+                return $this->sendResponse(array_keys($this->data), $socket);
             default:
-                return $socket->write("+OK\r\n");
+                return $this->sendResponse(Symbol::OK(), $socket);
                 break;
         }
     }
 
-    private function parseResponse($value, Socket $socket)
+    /**
+     * @param $value
+     * @param \Amp\Socket\Socket $socket
+     * @return \Amp\Promise
+     *
+     * @throws \Amp\ByteStream\ClosedException
+     * @throws \Amp\ByteStream\StreamException
+     */
+    private function sendResponse($value, Socket $socket)
     {
-        if ($value === null) {
-            return $socket->write("\$-1\r\n");
-        }
-
-        $length = strlen($value);
-
-        return $socket->write("\${$length}\r\n$value\r\n");
+        return $socket->write(Protocol::marshal($value));
     }
 }

@@ -36,6 +36,16 @@ class SkeletonTest extends TestCase
         $redis->set('lorem', '42');
         $this->assertEquals('42', $redis->get('lorem'));
     }
+
+    public function testKeys()
+    {
+        $redis = $this->client();
+
+        $redis->set('lorem', '42');
+        $redis->set('ipsum', '33');
+
+        $this->assertEquals(['ipsum', 'lorem'], $redis->keys('*'));
+    }
 }
 
 class PhredisTestServer
