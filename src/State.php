@@ -26,8 +26,8 @@ class State
                 return $socket->write("+PONG\r\n");
                 break;
             case "echo":
-                $msg = array_slice($data, 4)[0] ?? "OK";
-                return $socket->write("+$msg\r\n");
+                $msg = array_slice($data, 4)[0] ?? null;
+                return $this->parseResponse($msg, $socket);
                 break;
             case "set":
                 $key = $data[4] ?? null;
@@ -39,16 +39,22 @@ class State
                 $key = $data[4] ?? null;
                 $value = array_key_exists($key, $this->data) ? "{$this->data[$key]}" : null;
 
-                if ($value === null) {
-                    return $socket->write("\$-1\r\n");
-                } else {
-                    $length = strlen($value);
-                    return $socket->write("\${$length}\r\n$value\r\n");
-                }
+                return $this->parseResponse($value, $socket);
                 break;
             default:
                 return $socket->write("+OK\r\n");
                 break;
         }
+    }
+
+    private function parseResponse($value, Socket $socket)
+    {
+        if ($value === null) {
+            return $socket->write("\$-1\r\n");
+        }
+
+        $length = strlen($value);
+
+        return $socket->write("\${$length}\r\n$value\r\n");
     }
 }
