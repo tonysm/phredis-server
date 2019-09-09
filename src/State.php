@@ -9,6 +9,14 @@ class State
     /** @var array */
     private $data = [];
 
+    /** @var \Tonysm\Phredis\Protocol */
+    private $protocol;
+
+    public function __construct(Protocol $protocol)
+    {
+        $this->protocol = $protocol;
+    }
+
     /**
      * @param array $data
      * @param \Amp\Socket\Socket $socket
@@ -61,6 +69,6 @@ class State
      */
     private function sendResponse($value, Socket $socket)
     {
-        return $socket->write(Protocol::marshal($value));
+        return $socket->write($this->protocol->marshal($value));
     }
 }

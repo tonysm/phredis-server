@@ -7,9 +7,10 @@ $port = $argv[1] ?? '6379';
 use Amp\Loop;
 use Tonysm\Phredis\State;
 use function Amp\asyncCall;
+use Tonysm\Phredis\Protocol;
 use Tonysm\Phredis\Server as PhredisServer;
 
-$state = new State();
+$state = new State(new Protocol());
 $clientHandler = new PhredisServer($state);
 
 Loop::run(function () use ($port, $clientHandler) {

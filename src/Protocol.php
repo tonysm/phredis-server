@@ -10,7 +10,7 @@ class Protocol
      *
      * @throws \Exception
      */
-    public static function marshal($value): string
+    public function marshal($value): string
     {
         switch (true) {
             case $value === Symbol::PONG():
