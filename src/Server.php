@@ -21,6 +21,7 @@ class Server
      * @return \Generator
      * @throws \Amp\ByteStream\ClosedException
      * @throws \Amp\ByteStream\StreamException
+     * @throws \Tonysm\Phredis\UnknownDataType
      */
     public function __invoke(Socket $socket)
     {

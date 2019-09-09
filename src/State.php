@@ -24,6 +24,7 @@ class State
      * @return \Amp\Promise
      * @throws \Amp\ByteStream\ClosedException
      * @throws \Amp\ByteStream\StreamException
+     * @throws \Tonysm\Phredis\UnknownDataType
      */
     public function handle(array $data, Socket $socket)
     {
@@ -66,6 +67,7 @@ class State
      *
      * @throws \Amp\ByteStream\ClosedException
      * @throws \Amp\ByteStream\StreamException
+     * @throws \Tonysm\Phredis\UnknownDataType
      */
     private function sendResponse($value, Socket $socket)
     {

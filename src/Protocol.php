@@ -8,7 +8,7 @@ class Protocol
      * @param $value
      * @return string
      *
-     * @throws \Exception
+     * @throws \Tonysm\Phredis\UnknownDataType
      */
     public function marshal($value): string
     {
@@ -29,7 +29,7 @@ class Protocol
                 $length = strlen($value);
                 return "\${$length}\r\n$value\r\n";
             default:
-                throw new \Exception('Unknown response type');
+                throw new UnknownDataType();
         }
     }
 }
