@@ -44,7 +44,7 @@ class State
             case "keys":
                 // we are only getting all keys here.
                 // $pattern = $data[4] ?? null;
-                return $this->sendResponse(array_keys($this->data), $socket);
+                return $this->sendResponse(array_reverse(array_keys($this->data)), $socket);
             default:
                 return $this->sendResponse(Symbol::OK(), $socket);
                 break;

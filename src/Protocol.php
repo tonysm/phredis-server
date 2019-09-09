@@ -23,7 +23,7 @@ class Protocol
                 $length = count($value);
                 $strings = implode('', array_map(function ($val) {
                     return static::marshal($val);
-                }, array_reverse($value)));
+                }, $value));
                 return "*{$length}\r\n{$strings}";
             case is_string($value):
                 $length = strlen($value);
