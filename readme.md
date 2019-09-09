@@ -9,3 +9,5 @@ This is a playground project. It has the basic implementations of the [Redis pro
 You can even run the _redis-benchmark_ if you want to, just make sure you only test the set command:
 
 - Run `redis-benchmark -t set -p {port}`
+
+![Running](./docs/video.gif)
