@@ -11,3 +11,11 @@ You can even run the _redis-benchmark_ if you want to, just make sure you only t
 - Run `redis-benchmark -t set -p {port}`
 
 ![Running](./docs/video.gif)
+
+## Development
+
+There is an acceptance test case, so you can run:
+
+- `compose tests`
+
+It should start a Phredis server in background and kill it after the test ends.
